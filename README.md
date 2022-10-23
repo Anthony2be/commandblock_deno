@@ -5,7 +5,7 @@ Commandblock_deno is a port of [Commandblock_py](https://github.com/skandabhaira
 
 ## Example Usage
 ```ts
-//Since this isnt deployed onto deno.land yet you have to import with the raw github file
+// Since this isnt deployed onto deno.land yet you have to import with the raw github file
 import { Datapack } from "https://raw.githubusercontent.com/Anthony2be/commandblock_deno/main/mod.ts";
 
 const datapack = Datapack("test")

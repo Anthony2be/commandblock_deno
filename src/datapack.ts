@@ -16,7 +16,7 @@ export function GenerateCtx(path: string) {
     RegisterCommand: (content: string) => {
       Deno.writeTextFile(
         path,
-        `\n${content}`,
+        `${content}\n`,
         { append: true },
       );
     }
@@ -57,13 +57,15 @@ export function Datapack(DatapackName: string, options: DatapackOptions = {}) {
       Deno.writeTextFile(
         `${path}/${FunctionName}.mcfunction`,
         "",
-      );
-      callback(GenerateCtx(`${path}/${FunctionName}.mcfunction`));
+      ).then(() => {
+        callback(GenerateCtx(`${path}/${FunctionName}.mcfunction`));
+      });
     },
     // TODO(Anthony2be): ability to add multiple load functions
     RegisterLoadFunction: (FunctionName: string, callback: (ctx: DatapackContext) => void) => {
-      ensureDir(`${DatapackName}/data/minecraft/tags/functions/`).then(() => {
-        Deno.writeTextFile(
+      ensureDir(`${DatapackName}/data/minecraft/tags/functions/`)
+      .then(() => {
+        return Deno.writeTextFile(
           `${DatapackName}/data/minecraft/tags/functions/load.json`,
           JSON.stringify({
             values: [
@@ -71,30 +73,40 @@ export function Datapack(DatapackName: string, options: DatapackOptions = {}) {
             ],
           }),
         );
-      });
-      Deno.writeTextFile(
-        `${path}/${FunctionName}.mcfunction`,
-        "",
-      );
-      callback(GenerateCtx(`${path}/${FunctionName}.mcfunction`));
+      })
+      .then(() => {
+        return Deno.writeTextFile(
+          `${path}/${FunctionName}.mcfunction`,
+          "",
+        )
+      })
+      .then(() => {
+        callback(GenerateCtx(`${path}/${FunctionName}.mcfunction`));
+      })
+
     },
     // TODO(Anthony2be): ability to add multiple tick functions
     RegisterTickFunction: (FunctionName: string, callback: (ctx: DatapackContext) => void) => {
-      ensureDir(`${DatapackName}/data/minecraft/tags/functions/`).then(() => {
-        Deno.writeTextFile(
-          `${DatapackName}/data/minecraft/tags/functions/tick.json`,
-          JSON.stringify({
-            values: [
-              `${options.namespace}:${FunctionName}`,
-            ],
-          }),
-        );
-      });
-      Deno.writeTextFile(
-        `${path}/${FunctionName}.mcfunction`,
-        "",
-      );
-      callback(GenerateCtx(`${path}/${FunctionName}.mcfunction`));
-    }
+      ensureDir(`${DatapackName}/data/minecraft/tags/functions/`)
+        .then(() => {
+          return Deno.writeTextFile(
+            `${DatapackName}/data/minecraft/tags/functions/tick.json`,
+            JSON.stringify({
+              values: [
+                `${options.namespace}:${FunctionName}`,
+              ],
+            }),
+          );
+        })
+        .then(() => {
+          return Deno.writeTextFile(
+            `${path}/${FunctionName}.mcfunction`,
+            "",
+          )
+        })
+        .then(() => {
+          callback(GenerateCtx(`${path}/${FunctionName}.mcfunction`));
+        })
+    },
   };
 }

@@ -1,7 +1,7 @@
 # Commandblock_deno
 
 ## What is Commandblock_Deno?
-Commandblock_deno is a port of (Commandblock_py)[https://github.com/skandabhairava/Datapack_generator] to Deno
+Commandblock_deno is a port of [Commandblock_py](https://github.com/skandabhairava/Datapack_generator) to Deno
 
 ## Example Usage
 ```ts

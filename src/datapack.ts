@@ -23,6 +23,7 @@ export function GenerateCtx(path: string) {
   }
 }
 
+
 export function Datapack(DatapackName: string, options: DatapackOptions = {}) {
   if (!options.namespace) {
     options.namespace = DatapackName;
@@ -59,6 +60,7 @@ export function Datapack(DatapackName: string, options: DatapackOptions = {}) {
       );
       callback(GenerateCtx(`${path}/${FunctionName}.mcfunction`));
     },
+    // TODO(Anthony2be): ability to add multiple load functions
     RegisterLoadFunction: (FunctionName: string, callback: (ctx: DatapackContext) => void) => {
       ensureDir(`${DatapackName}/data/minecraft/tags/functions/`).then(() => {
         Deno.writeTextFile(
@@ -76,6 +78,7 @@ export function Datapack(DatapackName: string, options: DatapackOptions = {}) {
       );
       callback(GenerateCtx(`${path}/${FunctionName}.mcfunction`));
     },
+    // TODO(Anthony2be): ability to add multiple tick functions
     RegisterTickFunction: (FunctionName: string, callback: (ctx: DatapackContext) => void) => {
       ensureDir(`${DatapackName}/data/minecraft/tags/functions/`).then(() => {
         Deno.writeTextFile(
